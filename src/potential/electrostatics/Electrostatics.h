@@ -74,23 +74,23 @@ namespace elec {
       Vec<double> _mu;
       Vec<double> _xyz;
 
-		  Vec<double> _phii;
-		  Vec<double> _phij;
-		  Vec<double> _Efqix;
-		  Vec<double> _Efqjx;
-		  Vec<double> _Efqiy;
-		  Vec<double> _Efqjy;
-		  Vec<double> _Efqiz;
-		  Vec<double> _Efqjz;
+      Vec<double> _phii;
+      Vec<double> _phij;
+      Vec<double> _Efqix;
+      Vec<double> _Efqjx;
+      Vec<double> _Efqiy;
+      Vec<double> _Efqjy;
+      Vec<double> _Efqiz;
+      Vec<double> _Efqjz;
 
 
       // Initialize/reset temporaries
       void initTemps();
 
 
-			// Organize xyz so we have x1_1 x1_2 ... y1_1 y1_2...
-			// where xN_M is read as coordinate x of site N of monomer M
-	    // for the first monomer type. Then follows the second, and so on.
+      // Organize xyz so we have x1_1 x1_2 ... y1_1 y1_2...
+      // where xN_M is read as coordinate x of site N of monomer M
+      // for the first monomer type. Then follows the second, and so on.
       void organizeCrds();
 
 
@@ -148,10 +148,10 @@ namespace elec {
       }
 
 
-			// XXX: This might be worth making public
-			// Calculate screening coefficients (set as output params)
+      // XXX: This might be worth making public
+      // Calculate screening coefficients (set as output params)
       static void screenCoeff(const double rsq, const double A,
-				double& s0r, double& s1r3);
+        double& s0r, double& s1r3);
 
     public:
 

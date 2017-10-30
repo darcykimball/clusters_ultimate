@@ -54,7 +54,7 @@ namespace elec {
 
 
   Electrostatics::Electrostatics(
-		const Vec<double>& chg,
+    const Vec<double>& chg,
     const Vec<double>& polfac,
     const Vec<double>& pol,
     const Vec<double>& orig_xyz,
@@ -84,9 +84,9 @@ namespace elec {
     // Calculate which pairs to skip
     _notExcluded(getNonExcluded()),
 
-		_nsites(chg.size()),
+    _nsites(chg.size()),
 
-		// Temporaries
+    // Temporaries
     _sqrtpol(
       // Squareroot all pols
       vecMap(
@@ -94,7 +94,7 @@ namespace elec {
         replicateElt(3, pol.cbegin(), pol.cend())
       )
     ),
-		_Efq(3*_nsites),
+    _Efq(3*_nsites),
     _Efd(3*_nsites),
     _phi(_nsites),
     _mu(3*_nsites),
@@ -198,7 +198,7 @@ namespace elec {
       }
     }
 
-	  return notExcluded;
+    return notExcluded;
   }
 
 
@@ -228,7 +228,7 @@ namespace elec {
     // TODO
   }
 
-	// Calculate screening coefficients (set as out params)
+  // Calculate screening coefficients (set as out params)
   void Electrostatics::screenCoeff(const double rsq, const double A,
     double& s0r, double& s1r3) {
 
@@ -267,19 +267,19 @@ namespace elec {
       auto& typeCount = typeCount_indexPair.first;
       auto& siteIndexPairs = typeCount_indexPair.second;
 
-      size_t ns	= _sites[fi_mon]; // num sites for this type
+      size_t ns  = _sites[fi_mon]; // num sites for this type
       size_t nmon = typeCount.second; // num monomers for this type
       size_t nmon2 = nmon * 2;
 
 
       // Iterate through all non-excluded pairs
-			for (auto& indexPair : siteIndexPairs) {
+      for (auto& indexPair : siteIndexPairs) {
         auto i = indexPair.first;
         auto j = indexPair.second;
 
         // Get a1a2 and check if it's (floating pt) 0
-			  // FIXME: if it is, then i'm assuming we need to screen? is that
-			  // the only difference?
+        // FIXME: if it is, then i'm assuming we need to screen? is that
+        // the only difference?
         double A = _polfac[fi_sites + i] * _polfac[fi_sites + j];
         bool screeningNeeded = (A > constants::EPS);
 
@@ -311,37 +311,37 @@ namespace elec {
           const double ri = 1.0/r;
           const double risq = ri*ri;
 
-				  // Update the field
-      	  const size_t shift = _first_ind[fi_mon + m];
-      	  const size_t spi = shift + i;
-      	  const size_t spj = shift + j;
+          // Update the field
+          const size_t shift = _first_ind[fi_mon + m];
+          const size_t spi = shift + i;
+          const size_t spj = shift + j;
 
-      	  _phii[m] = ri * _chg[spj];
-      	  _phij[m] = ri * _chg[spi];
+          _phii[m] = ri * _chg[spj];
+          _phij[m] = ri * _chg[spi];
 
 
-      	  // Update Electric field
-      	  _Efqix[m] = ri * risq * _chg[spj] * rijx;
-      	  _Efqjx[m] = ri * risq * _chg[spi] * rijx;
-      	  _Efqiy[m] = ri * risq * _chg[spj] * rijy;
-      	  _Efqjy[m] = ri * risq * _chg[spi] * rijy;
-      	  _Efqiz[m] = ri * risq * _chg[spj] * rijz;
-      	  _Efqjz[m] = ri * risq * _chg[spi] * rijz;
+          // Update Electric field
+          _Efqix[m] = ri * risq * _chg[spj] * rijx;
+          _Efqjx[m] = ri * risq * _chg[spi] * rijx;
+          _Efqiy[m] = ri * risq * _chg[spj] * rijy;
+          _Efqjy[m] = ri * risq * _chg[spi] * rijy;
+          _Efqiz[m] = ri * risq * _chg[spj] * rijz;
+          _Efqjz[m] = ri * risq * _chg[spi] * rijz;
 
           // Multiply by screening coeffs. if needed
           if (screeningNeeded) {
             double s0r, s1r3;
             screenCoeff(rsq, A, s0r, s1r3);
 
-      	    _phii[m] *= s0r;
-      	    _phij[m] *= s0r;
+            _phii[m] *= s0r;
+            _phij[m] *= s0r;
 
-      	    _Efqix[m] *= s1r3;
-      	    _Efqjx[m] *= s1r3;
-      	    _Efqiy[m] *= s1r3;
-      	    _Efqjy[m] *= s1r3;
-      	    _Efqiz[m] *= s1r3;
-      	    _Efqjz[m] *= s1r3;
+            _Efqix[m] *= s1r3;
+            _Efqjx[m] *= s1r3;
+            _Efqiy[m] *= s1r3;
+            _Efqjy[m] *= s1r3;
+            _Efqiz[m] *= s1r3;
+            _Efqjz[m] *= s1r3;
           }
         }
 
